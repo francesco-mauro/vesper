@@ -1,0 +1,114 @@
+/*
+  Design tokens: colour, type, space, shape, motion.
+  Nothing in this file selects an element except the category mapping at the end.
+
+  Contents
+  - Font
+  - Light scheme (the sky just after sunset)
+  - Dark scheme (night)
+  - Type, space, shape
+  - Category mapping
+*/
+
+/* Font ----------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Young Serif';
+  src: url('../assets/fonts/young-serif.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Light scheme --------------------------------------------------------- */
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #eceef5;
+  --surface: #f8f9fd;
+  --ink: #1b1d2e;
+  --muted: #565a74;
+  --line: #d3d7e6;
+  --edge: #7c8199; /* borders of controls, 3:1 against the background */
+  --focus: #4352c4;
+  --warn: #b26a00;
+  --danger: #b3261e;
+
+  /* Category fills. Used as large colour fields with --card-ink text on top. */
+  --create: #f2b544;
+  --play: #ee7c88;
+  --move: #55bfa4;
+  --connect: #929eff;
+  --rest: #bea6dc;
+  --card-ink: #1b1d2e;
+
+  /* Darker twins for small dots and bars that sit on the page background. */
+  --create-strong: #b26a00;
+  --play-strong: #c2394f;
+  --move-strong: #1b8a70;
+  --connect-strong: #5563d6;
+  --rest-strong: #8a64b8;
+}
+
+/* Dark scheme ---------------------------------------------------------- */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12131f;
+    --surface: #1c1e31;
+    --ink: #ecedf7;
+    --muted: #a5a9c4;
+    --line: #2e3150;
+    --edge: #6b7094;
+    --focus: #a9b3ff;
+    --warn: #f2b544;
+    --danger: #ff8a80;
+
+    /* On a dark page the fills themselves already have enough contrast. */
+    --create-strong: var(--create);
+    --play-strong: var(--play);
+    --move-strong: var(--move);
+    --connect-strong: var(--connect);
+    --rest-strong: var(--rest);
+  }
+}
+
+/* Type, space, shape --------------------------------------------------- */
+
+:root {
+  --font-display: 'Young Serif', Georgia, 'Times New Roman', serif;
+  --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-hero: clamp(1.875rem, 8vw, 2.5rem);
+
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+
+  /* One radius per level of importance, not one for everything. */
+  --r-card: 28px;
+  --r-panel: 20px;
+  --r-row: 14px;
+  --r-pill: 999px;
+
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* Tab bar height. This is the one-row default; main.js replaces it with the measured height. */
+  --tabs-h: calc(65px + env(safe-area-inset-bottom));
+}
+
+/* Category mapping ----------------------------------------------------- */
+
+[data-cat='create'] { --cat: var(--create); --cat-strong: var(--create-strong); }
+[data-cat='play'] { --cat: var(--play); --cat-strong: var(--play-strong); }
+[data-cat='move'] { --cat: var(--move); --cat-strong: var(--move-strong); }
+[data-cat='connect'] { --cat: var(--connect); --cat-strong: var(--connect-strong); }
+[data-cat='rest'] { --cat: var(--rest); --cat-strong: var(--rest-strong); }

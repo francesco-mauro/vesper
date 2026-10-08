@@ -1,0 +1,719 @@
+/*
+  Vesper layout and components. Tokens live in tokens.css.
+
+  Contents
+  - Base
+  - Shell: masthead, banner, view, tab bar
+  - Type
+  - Buttons
+  - Segmented controls
+  - The pick card
+  - Panels, lists, rows
+  - Week: bars and days
+  - Dialogs and forms
+  - Utilities
+  - Forced colours
+  - Motion
+*/
+
+/* Base ----------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* The tab bar is sticky: keep focused elements from scrolling in underneath it. */
+  scroll-padding-bottom: calc(var(--tabs-h) + var(--s-4));
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 1rem/1.5 var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* Headings take focus after navigation; they are not controls, so no ring. */
+[tabindex='-1']:focus {
+  outline: none;
+}
+
+/* Shell ---------------------------------------------------------------- */
+
+.app {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  max-width: 32rem;
+  margin-inline: auto;
+}
+
+/* Explicit rows, so the layout never shifts when the banner region is empty. */
+.masthead { grid-row: 1; }
+.banner-region { grid-row: 2; }
+.view { grid-row: 3; }
+.tabs { grid-row: 4; }
+
+/* minmax(0, 1fr): a long unbroken word may wrap, but it may not widen the page. */
+.app,
+.view {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.masthead {
+  padding: max(var(--s-3), env(safe-area-inset-top)) max(var(--s-4), env(safe-area-inset-right)) 0 max(var(--s-4), env(safe-area-inset-left));
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 44px;
+  font: 400 1.125rem/1 var(--font-display);
+  text-decoration: none;
+}
+
+.wordmark::before {
+  content: '';
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  background: var(--create);
+}
+
+.banner {
+  display: grid;
+  gap: var(--s-3);
+  margin: var(--s-2) var(--s-4) 0;
+  padding: var(--s-3) var(--s-4);
+  border: 1.5px solid var(--warn);
+  border-radius: var(--r-row);
+  background: var(--surface);
+  font-size: 0.9375rem;
+}
+
+.banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.view {
+  display: grid;
+  align-content: start;
+  gap: var(--s-4);
+  padding: var(--s-3) max(var(--s-4), env(safe-area-inset-right)) var(--s-6) max(var(--s-4), env(safe-area-inset-left));
+}
+
+.tabs {
+  position: sticky;
+  bottom: 0;
+  /* Three equal tabs; at large text sizes they wrap onto a second row instead of widening the page. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  padding: var(--s-2) max(var(--s-4), env(safe-area-inset-right)) calc(var(--s-2) + env(safe-area-inset-bottom)) max(var(--s-4), env(safe-area-inset-left));
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.tabs a {
+  display: grid;
+  flex: 1 1 0;
+  min-width: max-content;
+  place-items: center;
+  min-height: 48px;
+  padding-inline: var(--s-3);
+  border-radius: var(--r-pill);
+  color: var(--muted);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.tabs a[aria-current='page'] {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+@media (hover: hover) {
+  .tabs a:not([aria-current='page']):hover {
+    color: var(--ink);
+  }
+}
+
+/* Type ----------------------------------------------------------------- */
+
+.view h1 {
+  font: 400 var(--text-xl) / 1.15 var(--font-display);
+}
+
+.lede {
+  color: var(--muted);
+}
+
+.group-title {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font: 400 var(--text-lg) / 1.25 var(--font-display);
+}
+
+.group-count {
+  font: 500 var(--text-sm) var(--font-ui);
+  color: var(--muted);
+}
+
+.insight {
+  font: 400 var(--text-lg) / 1.3 var(--font-display);
+  text-wrap: pretty;
+}
+
+.view > .group-title {
+  margin-top: var(--s-3);
+}
+
+/* Buttons -------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 var(--s-5);
+  border: 1.5px solid transparent;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-primary {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.btn-quiet {
+  border-color: var(--edge);
+}
+
+.btn-danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.btn-text {
+  color: var(--muted);
+}
+
+/* A lone action under a heading hugs its text instead of stretching across the page. */
+.view > .btn {
+  justify-self: start;
+}
+
+.btn-small {
+  min-height: 44px;
+  padding: 0 var(--s-4);
+  font-size: 0.9375rem;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* Buttons that sit on a category card use the card's own colours. */
+.btn-solid {
+  border-color: var(--card-ink);
+  background: var(--card-ink);
+  color: var(--cat);
+}
+
+.btn-ghost {
+  border-color: var(--card-ink);
+  color: var(--card-ink);
+}
+
+@media (hover: hover) {
+  .btn-primary:hover,
+  .btn-solid:hover {
+    opacity: 0.9;
+  }
+
+  .btn-quiet:hover,
+  .btn-danger:hover {
+    background: var(--surface);
+  }
+
+  .btn-text:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  .btn-ghost:hover {
+    background: rgb(27 29 46 / 0.1);
+  }
+}
+
+/* Segmented controls --------------------------------------------------- */
+
+.filters {
+  display: grid;
+  gap: var(--s-4);
+}
+
+.seg {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.seg legend {
+  margin-bottom: var(--s-2);
+  padding: 0;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+/* Equal pills in one row; at large text sizes they wrap instead of widening the page. */
+.seg-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.seg-opt {
+  position: relative;
+  display: block;
+  flex: 1 1 5.5rem;
+}
+
+.seg-opt input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.seg-opt span {
+  display: grid;
+  place-items: center;
+  min-height: 48px;
+  padding: 0 var(--s-3);
+  border: 1.5px solid var(--edge);
+  border-radius: var(--r-pill);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.seg-opt input:checked + span {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.seg-opt input:focus-visible + span {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* The pick card -------------------------------------------------------- */
+
+.pick {
+  display: grid;
+  align-content: space-between;
+  gap: var(--s-5);
+  min-height: 20rem;
+  min-height: min(55dvh, 22rem);
+  padding: var(--s-5);
+  border-radius: var(--r-card);
+  background: var(--cat);
+  color: var(--card-ink);
+}
+
+.pick :focus-visible {
+  outline-color: var(--card-ink);
+}
+
+.pick-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-3);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.pick-tag {
+  padding: var(--s-1) var(--s-3);
+  border-radius: var(--r-pill);
+  background: var(--card-ink);
+  color: var(--cat);
+  font-weight: 600;
+}
+
+.pick-title {
+  font: 400 var(--text-hero) / 1.1 var(--font-display);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.pick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+/* Panels, lists, rows -------------------------------------------------- */
+
+.panel {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-5);
+  border-radius: var(--r-panel);
+  background: var(--surface);
+}
+
+.panel > .btn {
+  justify-self: start;
+}
+
+.panel-title {
+  font: 400 var(--text-lg) / 1.25 var(--font-display);
+}
+
+.panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+.group,
+.day,
+.data {
+  display: grid;
+  gap: var(--s-3);
+  margin-top: var(--s-2);
+}
+
+.list {
+  display: grid;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dot {
+  flex: none;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: var(--cat-strong);
+}
+
+.row,
+.entry {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 56px;
+  border-radius: var(--r-row);
+  background: var(--surface);
+}
+
+.row {
+  width: 100%;
+  padding: var(--s-3) var(--s-4);
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.entry {
+  padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4);
+}
+
+.row-text {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.row-title {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.row-meta {
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.day-title {
+  color: var(--muted);
+  font: 600 var(--text-sm) var(--font-ui);
+}
+
+.data-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+@media (hover: hover) {
+  .row:hover {
+    background: var(--line);
+  }
+}
+
+/* Week: bars ----------------------------------------------------------- */
+
+.bars {
+  display: grid;
+  gap: var(--s-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 7rem 1fr 1.5rem;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.bar-label {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-weight: 500;
+}
+
+.bar-track {
+  display: block;
+  height: 0.75rem;
+  overflow: hidden;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+}
+
+.bar-fill {
+  display: block;
+  width: calc(var(--w, 0) * 1%);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--cat-strong);
+}
+
+.bar-count {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* Dialogs and forms ---------------------------------------------------- */
+
+.modal {
+  width: min(26rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  max-height: calc(100dvh - 2rem);
+  padding: 0;
+  overflow: auto;
+  border: 0;
+  border-radius: var(--r-panel);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.modal::backdrop {
+  background: rgb(8 9 20 / 0.6);
+}
+
+.modal-body,
+.modal-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-4);
+}
+
+.modal-body {
+  padding: var(--s-5);
+}
+
+.modal-title {
+  font: 400 var(--text-lg) / 1.25 var(--font-display);
+}
+
+.modal-text {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--s-3);
+}
+
+.field {
+  display: grid;
+  gap: var(--s-2);
+}
+
+.field label {
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 var(--s-4);
+  border: 1.5px solid var(--edge);
+  border-radius: var(--r-row);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 1rem; /* 16px or more, so iOS does not zoom into the field */
+}
+
+.input[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+.field-error {
+  color: var(--danger);
+  font-size: var(--text-sm);
+}
+
+.field-error:empty {
+  display: none;
+}
+
+/* Utilities ------------------------------------------------------------ */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.noscript {
+  padding: var(--s-5);
+}
+
+/* Forced colours ------------------------------------------------------- */
+
+/* In Windows high contrast mode backgrounds are replaced, so state that relied on
+   a fill (selected pill, current tab, bars) is redrawn with system colours. */
+@media (forced-colors: active) {
+  .seg-opt input:checked + span,
+  .tabs a[aria-current='page'] {
+    forced-color-adjust: none;
+    background: Highlight;
+    border-color: Highlight;
+    color: HighlightText;
+  }
+
+  .bar-track {
+    border: 1px solid CanvasText;
+  }
+
+  .bar-fill {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+
+  /* Fills are gone too, so give each block an outline to keep it readable as a unit. */
+  .pick {
+    border: 2px solid CanvasText;
+  }
+
+  .panel,
+  .row,
+  .entry,
+  .banner {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* Motion --------------------------------------------------------------- */
+
+/* One moment of motion: a new card arriving after a tap. Everything else is still. */
+@media (prefers-reduced-motion: no-preference) {
+  .pick-enter {
+    animation: arrive 0.32s var(--ease) both;
+  }
+
+  .btn,
+  .seg-opt span {
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  }
+
+  @keyframes arrive {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.985);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

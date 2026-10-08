@@ -1,0 +1,10 @@
+# Local tooling output
+.playwright-mcp/
+test-results/
+node_modules/
+*.log
+
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini

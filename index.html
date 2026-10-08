@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; manifest-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tonight - Vesper</title>
+  <meta name="description" content="Vesper picks one thing to do tonight from your own list, based on the time and energy you have.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ECEEF5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#12131F" media="(prefers-color-scheme: dark)">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Vesper: one thing for tonight">
+  <meta property="og:description" content="Tell it how much time and energy you have. It picks one thing from your own list.">
+  <meta property="og:url" content="https://francesco-mauro.github.io/vesper/">
+  <meta property="og:image" content="https://francesco-mauro.github.io/vesper/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/app.css">
+  <script type="module" src="src/main.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="masthead">
+      <a class="wordmark" href="#/tonight">Vesper</a>
+    </header>
+
+    <!-- Always in the page, so screen readers announce a warning when it appears. -->
+    <div id="banner-region" class="banner-region" role="status"></div>
+
+    <main id="view" class="view"></main>
+
+    <nav class="tabs" aria-label="Main">
+      <a href="#/tonight">Tonight</a>
+      <a href="#/menu">Menu</a>
+      <a href="#/week">Week</a>
+    </nav>
+  </div>
+
+  <div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+
+  <noscript>
+    <p class="noscript">Vesper needs JavaScript to run. Nothing is sent anywhere: the whole app stays in your browser.</p>
+  </noscript>
+</body>
+</html>

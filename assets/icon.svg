@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Vesper">
+  <rect width="512" height="512" rx="112" fill="#1B1D2E"/>
+  <circle cx="350" cy="150" r="8" fill="#ECEDF7"/>
+  <circle cx="170" cy="190" r="5" fill="#ECEDF7"/>
+  <path d="M136 320a120 120 0 0 1 240 0z" fill="#F2B544"/>
+  <rect x="136" y="346" width="240" height="16" rx="8" fill="#BEA6DC"/>
+  <rect x="176" y="378" width="160" height="16" rx="8" fill="#929EFF"/>
+  <rect x="216" y="410" width="80" height="16" rx="8" fill="#55BFA4"/>
+</svg>
